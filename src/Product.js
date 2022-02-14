@@ -14,7 +14,6 @@ const Product = ({ product, onCartAdd }) => {
             <img src={imageUrl} className="product-image" />
             <div className="product-info-container">
                 <div>{product.name}</div>
-
                 <button onClick={() => onCartAdd(product)}>add to cart</button>
             </div>
         </div>
