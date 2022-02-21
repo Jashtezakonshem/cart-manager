@@ -43,7 +43,6 @@ export default function App() {
         return true
       }
     })
-
     // const myFunction = () => 'ciao'
     // // EQUIVALENTI
     // const myFunction = () => {
@@ -51,15 +50,30 @@ export default function App() {
     // }
   }
 
+  const filterProducts = (qs, pkId) => {
+    return products.filter(p => {
+      if (pkId) {
+        return p.productKindId === pkId
+      } else {
+        return true
+      }
+    }).filter(p => {
+      const name = p.name?.toLowerCase()
+      return name?.includes(qs.toLowerCase())
+      // equivalente
+      //return name?.indexOf(qs.toLowerCase()) > -1
+    })
+  }
+
   // eseguo la funzione (filterProductsByQueryString) soltanto quando cambia uno dei valori nell'array delle Deps
   // in questo  caso queryString. Il ritorno della funzione, lo assegno alla variabile filteredProducts
   // filteredProducts è ottimizzata perché verrà ricomputata soltanto quando cambia il filtro queryString
-  const filteredProducts = useMemo(() => filterProductsByQueryString(queryString), [queryString]);
+  const filteredProducts = useMemo(() => filterProducts(queryString, selectedPkId), [queryString, selectedPkId]);
 
   // useMemo esegue la funzione che scrivo come primo argomento, quando cambia l'array delle Deps.
   // In questo caso eseguo la funzione quando cambia selectedPkId
   // quando cambia selectedPkId? quando seleziono qualcosa attraverso il radio button
-  const filteredProductsByProductKind = useMemo(() => filterProductsByProductKind(selectedPkId), [selectedPkId]);
+  // const filteredProductsByProductKind = useMemo(() => filterProductsByProductKind(selectedPkId), [selectedPkId]);
 
   const onProductKindChange = (pk, checked) => {
     checked && selectPkId(pk._id)
@@ -80,7 +94,7 @@ export default function App() {
         <div className="App">
           <div className="left-column">
             <input type="text" value={queryString} onChange={onInputChange} />
-            {filteredProductsByProductKind.map(p=> <Product key={p._id} product={p} onCartAdd={addToCart} />)}
+            {filteredProducts.map(p=> <Product key={p._id} product={p} onCartAdd={addToCart} />)}
           </div>
           <div className="right-column">
             {
