@@ -1,5 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import UserCard from './components/UserCard'
 // NOTATE BENE: QUANDO IMPORTO QUALCOSA CHE NON E' JAVASCRIPT,
 //DEVO PER FORZA AGGIUNGERE L'ESTENZIONE DEL FILE.
 // I FILE NON JAVASCRIPT NON POSSONO ESSERE TRADIZIONALMENTE IMPORTATI
@@ -18,24 +19,25 @@ import adminImage from "./assets/admin.jpeg";
 // fate un rendering condizionale
 
 const Users = () => {
+    const [users, setUsers] = useState([])
     useEffect(() => {
         const fetch = async () => {
-            const response = await axios({
-                baseURL: "https://hodgepodge-server.herokuapp.com",
-                method: "get",
-                url: "/users",
-                headers: {
-                    Authorization:
-                        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxZjZkZWZhNDBjZGUzMDAxNjgxMDEwZSIsImlhdCI6MTY0NTk5NzI1NX0.X3CsnRYJo8BYMY7GUJq23DVZsign_WyXltQemh1efow"
-                }
-            });
-            console.log({ response });
+            const response = await axios.get('/users')
+            console.log({ response })
+            setUsers(response.data)
         };
         fetch();
     }, []);
+
+    const createUser = async () => {
+        await axios.post('/users', {})
+    }
     return (
         <div className="App">
-            <img src={adminImage} style={{ width: 150 }} />
+            {
+                users.map(u => (<UserCard user={u} />))
+            }
+
         </div>
     );
 }
