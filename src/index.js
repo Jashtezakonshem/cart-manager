@@ -2,13 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import Users from './Users'
 // import App from './ProductKindsFilter';
 import Chronometer from './Chronometer';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Users />
   </React.StrictMode>,
   document.getElementById('root')
 );
